@@ -35,7 +35,7 @@ export default function Appbar() {
         <NavItem href="/about">About</NavItem>
         <NavItem href="/addemploye">Add Employee</NavItem>
         <NavItem href="/addpostion">Add Position</NavItem>
-
+        <NavItem href="/tree">Tree</NavItem>
         <button
           onClick={toggleDarkMode}
           className="p-2 rounded-full bg-light-accent dark:bg-dark-accent transition hover:scale-110"
@@ -60,6 +60,9 @@ export default function Appbar() {
           </NavItem>
           <NavItem href="/addpostion" onClick={() => setShow(false)}>
             Add Position
+          </NavItem>
+          <NavItem href="/tree" onClick={() => setShow(false)}>
+            Tree
           </NavItem>
 
           <button
