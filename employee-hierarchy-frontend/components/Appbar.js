@@ -8,14 +8,12 @@ export default function Appbar() {
   const [show, setShow] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
-  // Load dark mode preference
   useEffect(() => {
     const isDark = localStorage.getItem("theme") === "dark";
     setDarkMode(isDark);
     document.documentElement.classList.toggle("dark", isDark);
   }, []);
 
-  // Toggle dark mode
   const toggleDarkMode = () => {
     const newMode = !darkMode;
     setDarkMode(newMode);
@@ -25,7 +23,6 @@ export default function Appbar() {
 
   return (
     <nav className="flex justify-between items-center bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text border-b border-light-border dark:border-dark-border shadow-md px-8 py-4 fixed w-full top-0 z-50">
-      {/* Logo */}
       <div className="w-36">
         <img
           src="https://www.peragosystems.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fperago2.793ab807.png&w=384&q=75"
@@ -33,14 +30,12 @@ export default function Appbar() {
         />
       </div>
 
-      {/* Desktop Navigation */}
       <ul className="hidden sm:flex flex-row justify-center items-center space-x-8 font-semibold text-lg">
         <NavItem href="/">Home</NavItem>
         <NavItem href="/about">About</NavItem>
         <NavItem href="/addemploye">Add Employee</NavItem>
         <NavItem href="/addpostion">Add Position</NavItem>
 
-        {/* Dark Mode Toggle */}
         <button
           onClick={toggleDarkMode}
           className="p-2 rounded-full bg-light-accent dark:bg-dark-accent transition hover:scale-110"
@@ -49,12 +44,9 @@ export default function Appbar() {
         </button>
       </ul>
 
-      {/* Mobile Menu Icon */}
       <div className="cursor-pointer sm:hidden" onClick={() => setShow(!show)}>
         {show ? <FaTimes size={30} /> : <FaBars size={30} />}
       </div>
-
-      {/* Mobile Sidebar Menu */}
       {show && (
         <ul className="fixed top-0 right-0 h-full w-2/3 bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text shadow-xl flex flex-col items-center justify-center space-y-8 text-xl transition-transform transform translate-x-0">
           <NavItem href="/" onClick={() => setShow(false)}>
@@ -70,7 +62,6 @@ export default function Appbar() {
             Add Position
           </NavItem>
 
-          {/* Dark Mode Toggle (Mobile) */}
           <button
             onClick={toggleDarkMode}
             className="p-3 rounded-full bg-light-accent dark:bg-dark-accent transition hover:scale-110"
@@ -83,7 +74,6 @@ export default function Appbar() {
   );
 }
 
-// Reusable Navigation Item
 const NavItem = ({ href, children, onClick }) => (
   <li>
     <Link
