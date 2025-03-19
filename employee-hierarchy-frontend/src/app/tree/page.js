@@ -108,7 +108,7 @@ export default function Tree() {
   };
 
   return (
-    <div className="p-6 max-w-3xl mx-auto bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text shadow-md rounded-lg">
+    <div className="p-6 mt-5 max-w-3xl mx-auto bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text shadow-md rounded-lg">
       <h2 className="text-2xl font-semibold text-center mb-4">
         Employee Hierarchy
       </h2>

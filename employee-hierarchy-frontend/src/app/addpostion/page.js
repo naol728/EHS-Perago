@@ -3,37 +3,46 @@ import Button from "../../../components/Button";
 
 export default function AddPostion() {
   return (
-    <div className="flex h-[90vh]  justify-center items-center ">
-      <div className="grid place-content-center max-w-xl space-y-5 h-full  rounded-xl  px-16 bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text ">
-        <h2 className="text-2xl font-semibold text-center mb-4">Add Postion</h2>
-        <form className="flex flex-col w-80 space-y-2 ">
-          <label className="flex flex-col w-full space-y-1">
-            <span className="font-semibold ">Name</span>
+    <div className="flex h-[90vh] justify-center items-center bg-gray-100 dark:bg-gray-900">
+      <div className="w-full max-w-md bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8">
+        <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-gray-200 mb-6">
+          Add Position
+        </h2>
+        <form className="space-y-4">
+          <div>
+            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
+              Name
+            </label>
             <input
               type="text"
-              className=" px-3 py-2 rounded-lg dark:bg-dark-secondary"
+              placeholder="Enter position name"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-gray-700 dark:text-gray-200"
             />
-          </label>
-          <label className="flex flex-col w-full space-y-1">
-            <span className="font-semibold ">Description</span>
-            <input
-              type="text"
-              className=" px-3 py-2 rounded-lg dark:bg-dark-secondary"
-            />
-          </label>
-          <label className="flex flex-col w-full space-y-1 ">
-            <span className="font-semibold ">Parent Id</span>
-            <select className="px-1 py-2 rounded-lg bg-light-background dark:bg-dark-secondary text-light-text dark:text-dark-text ">
-              <option value="option1" className="px-1 py-2">
-                option 1
-              </option>
-              <option value="option2" className="px-1 py-2">
-                option 2
-              </option>
-            </select>
-          </label>
+          </div>
 
-          <Button type="submit">Submit </Button>
+          <div>
+            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
+              Description
+            </label>
+            <input
+              type="text"
+              placeholder="Enter description"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-gray-700 dark:text-gray-200"
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
+              Parent Position
+            </label>
+            <select className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-gray-700 dark:text-gray-200">
+              <option value="option1">Select a Parent</option>
+              <option value="option1">Option 1</option>
+              <option value="option2">Option 2</option>
+            </select>
+          </div>
+
+          <Button type="submit">Submit</Button>
         </form>
       </div>
     </div>
