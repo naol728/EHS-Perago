@@ -23,7 +23,7 @@ export default function Appbar() {
 
   return (
     <nav className="flex justify-between items-center bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text border-b border-light-border dark:border-dark-border shadow-md px-8 py-4 fixed w-full top-0 z-50">
-      <div className="w-36">
+      <div className=" w-28 sm:w-36 ">
         <img
           src="https://www.peragosystems.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fperago2.793ab807.png&w=384&q=75"
           alt="Logo"
