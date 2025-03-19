@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./../../style/globals.css";
 import Appbar from "../../components/Appbar";
+import ReduxProvider from "../../store/providers/ReduxProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +25,9 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100 dark:bg-gray-900 `}
       >
         <Appbar />
-        <div className="mt-[4.7rem]">{children}</div>
+        <div className="mt-[4.7rem]">
+          <ReduxProvider>{children}</ReduxProvider>
+        </div>
       </body>
     </html>
   );

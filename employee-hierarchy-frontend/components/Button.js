@@ -12,7 +12,7 @@ export default function Button({ type, onClick, children, sx }) {
       "px-2 py-1 text-xs bg-red-500 hover:bg-red-600 text-white dark:bg-red-700 dark:hover:bg-red-800",
     submit:
       baseStyles +
-      "px-3 py-2 text-md  bg-green-500  hover:bg-green-600 text-white dark:bg-green-700 dark:hover:bg-green-800",
+      "px-3 py-2 w-full text-md  bg-green-500  hover:bg-green-600 text-white dark:bg-green-700 dark:hover:bg-green-800",
   };
 
   return (
