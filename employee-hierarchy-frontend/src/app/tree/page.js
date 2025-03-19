@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "../../../components/Button";
 
 export default function Tree() {
   const positions = [
@@ -57,76 +58,51 @@ export default function Tree() {
     {
       name: "Naol Meseret",
       description: "This is our CEO",
-      parentId: "3",
+      parentId: "1",
       id: "4",
     },
     {
-      name: "Fuad Seid",
-      description: "This is our CEO",
-      parentId: null,
-      id: "8",
-    },
-    {
-      name: "Meron Nisar",
-      description: "Our project manager",
-      parentId: "3",
-      id: "10",
-    },
-    {
-      name: "Samuel Tale",
-      description: "Our HR manager",
-      parentId: null,
-      id: "12",
-    },
-    {
-      name: "Samuel Esubalew",
-      description: "This is Samuel",
-      parentId: "12",
-      id: "13",
-    },
-    { name: "Biruk", description: "This is Biruk", parentId: "11", id: "15" },
-    {
-      name: "Getahun",
-      description: "This is Getahun",
-      parentId: "5",
-      id: "17",
-    },
-    {
       name: "Abdela Nesredin Nasir",
-      description: "CEO of company",
-      parentId: "1",
-      id: "18",
+      description: " This is CTO of company",
+      parentId: "2",
+      id: "5",
     },
   ];
 
   const recursiveRender = (parentId) => {
-    const children = positions.filter((pos) => pos.parentId === parentId);
-    const people = persons.filter((person) => person.parentId === parentId);
-
-    if (children.length === 0 && people.length === 0) return null;
-
     return (
       <ul className="ml-4 border-l-2 border-gray-400 pl-4">
-        {children.map((pos) => (
-          <li key={pos.id} className="mb-2">
-            <div className="font-bold text-light-primary dark:text-dark-primary">
-              {pos.name}
+        {positions
+          .filter((pos) => pos.parentId === parentId)
+          .map((pos) => (
+            <div key={pos.id}>
+              <li className="mb-2">
+                <div className="font-bold text-light-primary dark:text-dark-primary">
+                  {pos.name}
+                </div>
+                <div className="text-sm text-light-secondary dark:text-dark-secondary">
+                  {pos.description}
+                </div>
+              </li>
+              {persons
+                .filter((person) => person.parentId === pos.id)
+                .map((person) => (
+                  <li key={person.id} className="mb-2 ml-4">
+                    <div className="text-light-accent dark:text-dark-accent">
+                      {person.name}
+                      <div className="flex space-x-3 mt-1">
+                        <Button type="update">update</Button>
+                        <Button type="delete">delete</Button>
+                      </div>
+                    </div>
+                    <div className="text-xs mt-1 text-gray-500">
+                      {person.description}
+                    </div>
+                  </li>
+                ))}
+              {recursiveRender(pos.id)}
             </div>
-            <div className="text-sm text-light-secondary dark:text-dark-secondary">
-              {pos.description}
-            </div>
-            {/* Recursive call for child positions */}
-            {recursiveRender(pos.id)}
-          </li>
-        ))}
-        {people.map((person) => (
-          <li key={person.id} className="mb-2 ml-4">
-            <div className="text-light-accent dark:text-dark-accent">
-              {person.name}
-            </div>
-            <div className="text-xs text-gray-500">{person.description}</div>
-          </li>
-        ))}
+          ))}
       </ul>
     );
   };
