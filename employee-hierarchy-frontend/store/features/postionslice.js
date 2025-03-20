@@ -1,11 +1,15 @@
 const { createSlice } = require("@reduxjs/toolkit");
 const initialState = {
-  name: "",
+  postionData: [],
 };
 const postion = createSlice({
   name: "postion",
   initialState,
-  reducers: {},
+  reducers: {
+    addPostion(state, action) {
+      state.postionData = [...action.payload];
+    },
+  },
 });
-export const {} = postion.actions;
+export const { addPostion } = postion.actions;
 export default postion.reducer;
