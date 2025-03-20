@@ -1,16 +1,24 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Button from "../../../components/Button";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import Button from "../../../components/Button";
+import Loading from "../../../components/Loading";
+import Popup from "../../../components/Popup";
 import { addPostion } from "../../../store/features/postionslice";
 import {
   addPeople,
   handleChangepersondata,
   setSelectedperson,
 } from "../../../store/features/peopleslice";
-import Loading from "../../../components/Loading";
-import Popup from "../../../components/Popup";
+
+import {
+  deleteEmployee,
+  fetchEmployees,
+  fetchPostion,
+  fetchEmployee,
+  updateEmployee
+} from "../../../service/apiservice";
+
 export default function Tree() {
   const positions = useSelector((state) => state.postions.postionData);
   const persons = useSelector((state) => state.peoples.peopleData);
@@ -25,12 +33,8 @@ export default function Tree() {
     async function fetchData() {
       setLoading(true);
       try {
-        const employeedata = await axios.get(
-          "http://localhost:8000/api/employee"
-        );
-        const positiondata = await axios.get(
-          "http://localhost:8000/api/postion"
-        );
+        const employeedata = await fetchEmployees();
+        const positiondata = await fetchPostion();
 
         dispatch(addPostion(positiondata.data));
         dispatch(addPeople(employeedata.data));
@@ -48,11 +52,8 @@ export default function Tree() {
     e.preventDefault();
     try {
       setBtnloading(true);
-      await axios.patch(
-        `http://localhost:8000/api/employee/${selectedpeople.id}`,
-        selectedpeople
-      );
-      const updatedData = await axios.get("http://localhost:8000/api/employee");
+      await updateEmployee(selectedpeople.id, selectedpeople);
+      const updatedData = await fetchEmployees();
       dispatch(addPeople(updatedData.data));
       setIsPopupOpen(false);
     } catch (err) {
@@ -65,9 +66,7 @@ export default function Tree() {
     setIsPopupOpen(true);
     try {
       setDataloading(true);
-      const selecteddata = await axios.get(
-        `http://localhost:8000/api/employee/${id}`
-      );
+      const selecteddata = await fetchEmployee(id);
       dispatch(setSelectedperson(selecteddata.data[0]));
     } catch (err) {
       console.log(err);
@@ -77,8 +76,8 @@ export default function Tree() {
   };
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/employee/${id}`);
-      const updatedData = await axios.get("http://localhost:8000/api/employee");
+      await deleteEmployee(id);
+      const updatedData = await fetchEmployees();
       dispatch(addPeople(updatedData.data));
     } catch (err) {
       console.log(err);

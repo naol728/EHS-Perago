@@ -3,6 +3,7 @@ const { eq } = require("drizzle-orm");
 const { Positions } = require("./../db/schema");
 const createPostion = async (req, res) => {
   const { name, description, parent_id } = req.body;
+  console.log(req.body);
   try {
     const newEmployee = await db
       .insert(Positions)
