@@ -1,0 +1,21 @@
+{
+  "name": "employee-hierarchy-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start ": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.1",
+    "@vercel/postgres": "^0.10.0",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.40.1",
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9",
+    "pg": "^8.14.1"
+  }
+}

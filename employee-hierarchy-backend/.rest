@@ -1,0 +1,7 @@
+post http://localhost:3000/api/employee/employees
+
+{
+"name":"naol meseret",
+"description":"this is our CEO",
+"position_id":1
+}
