@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Button({ type, onClick, children, sx }) {
+export default function Button({ type, onClick, children, sx, disabled }) {
   const baseStyles = " rounded-md font-semibold transition duration-300 ";
 
   const typeStyles = {
@@ -16,7 +16,12 @@ export default function Button({ type, onClick, children, sx }) {
   };
 
   return (
-    <button onClick={onClick} style={sx} className={` ${typeStyles[type]}`}>
+    <button
+      onClick={onClick}
+      style={sx}
+      disabled={disabled}
+      className={` ${typeStyles[type]}`}
+    >
       {children}
     </button>
   );

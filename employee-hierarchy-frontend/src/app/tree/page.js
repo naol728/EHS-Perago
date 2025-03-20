@@ -4,14 +4,21 @@ import Button from "../../../components/Button";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addPostion } from "../../../store/features/postionslice";
-import { addPeople } from "../../../store/features/peopleslice";
+import {
+  addPeople,
+  handleChangepersondata,
+  setSelectedperson,
+} from "../../../store/features/peopleslice";
 import Loading from "../../../components/Loading";
 import Popup from "../../../components/Popup";
 export default function Tree() {
   const positions = useSelector((state) => state.postions.postionData);
   const persons = useSelector((state) => state.peoples.peopleData);
+  const selectedpeople = useSelector((state) => state.peoples.selectedpeople);
   const [loading, setLoading] = useState(true);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [btnloading, setBtnloading] = useState(false);
+  const [dataloading, setDataloading] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -37,12 +44,45 @@ export default function Tree() {
     fetchData();
   }, [dispatch]);
 
-  const handleUpdate = (id) => {
-    setIsPopupOpen(true);
-    console.log(id);
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      setBtnloading(true);
+      await axios.patch(
+        `http://localhost:8000/api/employee/${selectedpeople.id}`,
+        selectedpeople
+      );
+      const updatedData = await axios.get("http://localhost:8000/api/employee");
+      dispatch(addPeople(updatedData.data));
+      setIsPopupOpen(false);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setBtnloading(false);
+    }
   };
-  const handleDelete = (id) => {
-    console.log(id);
+  const openPopup = async (id) => {
+    setIsPopupOpen(true);
+    try {
+      setDataloading(true);
+      const selecteddata = await axios.get(
+        `http://localhost:8000/api/employee/${id}`
+      );
+      dispatch(setSelectedperson(selecteddata.data[0]));
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setDataloading(false);
+    }
+  };
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/employee/${id}`);
+      const updatedData = await axios.get("http://localhost:8000/api/employee");
+      dispatch(addPeople(updatedData.data));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const recursiveRender = (parentId) => {
@@ -69,7 +109,7 @@ export default function Tree() {
                       <div className="flex space-x-3 mt-1">
                         <Button
                           type="update"
-                          onClick={() => handleUpdate(person.id)}
+                          onClick={() => openPopup(person.id)}
                         >
                           update
                         </Button>
@@ -106,13 +146,21 @@ export default function Tree() {
         onClose={() => setIsPopupOpen(false)}
         title="Update the Data"
       >
-        <form className="flex flex-col">
+        <form className="flex flex-col" onSubmit={handleUpdate}>
           <label className="text-sm font-semibold mb-1">Name:</label>
           <input
             type="text"
             name="name"
-            // value={formData.name}
-            // onChange={handleChange}
+            disabled={dataloading}
+            value={selectedpeople?.name}
+            onChange={(e) =>
+              dispatch(
+                handleChangepersondata({
+                  ...selectedpeople,
+                  name: e.target.value,
+                })
+              )
+            }
             className=" p-2 mb-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-gray-700 dark:text-gray-200"
             required
           />
@@ -120,18 +168,23 @@ export default function Tree() {
           <label className="text-sm font-semibold mb-1">Description:</label>
           <textarea
             name="description"
-            // value={formData.description}
-            // onChange={handleChange}
+            disabled={dataloading}
+            value={selectedpeople?.description}
+            onChange={(e) =>
+              dispatch(
+                handleChangepersondata({
+                  ...selectedpeople,
+                  description: e.target.value,
+                })
+              )
+            }
             className="border  p-2 mb-3  border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-gray-700 dark:text-gray-200"
             required
           ></textarea>
 
-          <button
-            type="submit"
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-          >
-            Update
-          </button>
+          <Button type="submit" disabled={btnloading}>
+            {btnloading ? "Updating..." : "Update"}
+          </Button>
         </form>
       </Popup>
     </div>

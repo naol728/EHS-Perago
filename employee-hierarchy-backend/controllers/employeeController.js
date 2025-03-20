@@ -61,7 +61,9 @@ const updateEmployee = async (req, res) => {
       .update(Employee)
       .set(req.body)
       .where(eq(Employee.id, req.params.id));
-    res.status(200).json({ message: "Employee updated" });
+    res
+      .status(200)
+      .json({ message: "Employee updated", updateddata: res.body });
   } catch (err) {
     console.log(err);
     res.status(500).json({
