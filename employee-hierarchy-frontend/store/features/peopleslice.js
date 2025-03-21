@@ -2,6 +2,12 @@ const { createSlice } = require("@reduxjs/toolkit");
 const initialState = {
   peopleData: [],
   selectedpeople: null,
+  employeeparent: [],
+  formdata: {
+    name: "",
+    description: "",
+    position_id: undefined,
+  },
 };
 const people = createSlice({
   name: "people",
@@ -23,7 +29,23 @@ const people = createSlice({
         };
       }
     },
+
+    setEmployeeparent(state, action) {
+      state.employeeparent = action.payload;
+    },
+    setFormdata(state, action) {
+      state.formdata = {
+        ...state.formdata,
+        ...action.payload,
+      };
+    },
   },
 });
-export const { addPeople, setSelectedperson,handleChangepersondata } = people.actions;
+export const {
+  addPeople,
+  setSelectedperson,
+  handleChangepersondata,
+  setEmployeeparent,
+  setFormdata,
+} = people.actions;
 export default people.reducer;

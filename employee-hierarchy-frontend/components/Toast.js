@@ -4,10 +4,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle, XCircle, X } from "lucide-react";
 
 export default function Toast({ message, type, onClose }) {
+  console.log("Toast message:", message);
   useEffect(() => {
     const timer = setTimeout(() => {
+      console.log("Closing toast...");
       onClose();
-    }, 3000); // Auto-close after 3 seconds
+    }, 7000); 
 
     return () => clearTimeout(timer);
   }, [onClose]);
@@ -20,8 +22,12 @@ export default function Toast({ message, type, onClose }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
-          className={`fixed top-5 right-5 flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg 
-            ${type === "success" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}
+          className={`fixed top-12 right-10 flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg  z-50
+            ${
+              type === "success"
+                ? "bg-green-100 text-green-800"
+                : "bg-red-100 text-red-800"
+            }
           `}
         >
           {type === "success" ? (
@@ -32,7 +38,10 @@ export default function Toast({ message, type, onClose }) {
 
           <span className="font-medium">{message}</span>
 
-          <button onClick={onClose} className="ml-auto text-gray-500 hover:text-gray-700">
+          <button
+            onClick={onClose}
+            className="ml-auto text-gray-500 hover:text-gray-700"
+          >
             <X className="w-4 h-4" />
           </button>
         </motion.div>

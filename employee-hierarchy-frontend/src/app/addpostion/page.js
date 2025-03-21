@@ -2,32 +2,35 @@
 import React, { useEffect, useState } from "react";
 import Button from "../../../components/Button";
 import { addPostion, fetchPostion } from "../../../service/apiservice";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setFormdata,
+  setPostionparent,
+  setToast,
+} from "../../../store/features/postionslice";
+import Toast from "../../../components/Toast";
 
 export default function AddPostion() {
-  const [postionparent, setPostionparent] = useState([]);
-  const [formdata, setFormdata] = useState({
-    name: "",
-    description: "",
-    parent_id: undefined,
-  });
+  const postionparent = useSelector((state) => state.postions.postionparent);
+  const toast = useSelector((state) => state.postions.toast);
+  const formdata = useSelector((state) => state.postions.formdata);
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormdata((prev) => ({
-      ...prev,
-      [name]: name === "parent_id" ? Number(value) : value,
-    }));
+    dispatch(setFormdata({ [name]: value }));
   };
 
   useEffect(() => {
     async function fetchpostion() {
       try {
         const data = await fetchPostion();
-        console.log(...data.data);
-        setPostionparent([...data.data]);
+        dispatch(setPostionparent([...data.data]));
       } catch (err) {
-        console.log("faild to fetch", err);
+        console.log(err);
+        dispatch(
+          setToast({ message: "Faild to fetch the parents ", type: "error" })
+        );
       }
     }
     fetchpostion();
@@ -37,15 +40,31 @@ export default function AddPostion() {
     try {
       const res = await addPostion(formdata);
       if (res.status === 201) {
-        console.log("added succesfuly");
+        dispatch(
+          setFormdata({
+            name: "",
+            description: "",
+            parent_id: undefined,
+          })
+        );
+        dispatch(
+          setToast({ message: "Position added successfully!", type: "success" })
+        );
       }
     } catch (err) {
-      console.log("faild to update", err);
+      dispatch(setToast({ message: "Failed to add position.", type: "error" }));
     }
   };
   return (
     <div className="flex h-[90vh] justify-center items-center bg-gray-100 dark:bg-gray-900">
       <div className="w-full max-w-md bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8">
+        {toast.message && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast({})}
+          />
+        )}
         <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-gray-200 mb-6">
           Add Position
         </h2>
