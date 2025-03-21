@@ -2,7 +2,6 @@ const db = require("../db/index");
 const { eq } = require("drizzle-orm");
 const { Employee } = require("./../db/schema");
 const createEmployee = async (req, res) => {
-  console.log(req.body);
   const { name, description, position_id } = req.body;
   try {
     const newEmployee = await db

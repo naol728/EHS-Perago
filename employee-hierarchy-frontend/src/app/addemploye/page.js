@@ -2,41 +2,45 @@
 import React, { useEffect, useState } from "react";
 import Button from "../../../components/Button";
 import { addEmployee, fetchPostion } from "../../../service/apiservice";
-import axios from "axios";
 import Toast from "../../../components/Toast";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setEmployeeparent,
+  setFormdata,
+} from "../../../store/features/peopleslice";
+import { setToast } from "../../../store/features/postionslice";
 
 export default function AddEmploye() {
-  const [employeeparent, setEmployeeparent] = useState([]);
-  const [formdata, setFormdata] = useState({
-    name: "",
-    description: "",
-    position_id: undefined,
-  });
-  const [toast, setToast] = useState({ message: "", type: "" });
+  const toast = useSelector((state) => state.postions.toast);
+  const employeeparent = useSelector((state) => state.peoples.employeeparent);
+  const formdata = useSelector((state) => state.peoples.formdata);
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormdata((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    dispatch(setFormdata({ [name]: value }));
   };
+
   const handlesubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await addEmployee(formdata);
       if (res.status === 201) {
         console.log("added succesfuly");
-        setToast({ message: "Position added successfully!", type: "success" });
-        setFormdata({
-          name: "",
-          description: "",
-          position_id: undefined,
-        });
+        dispatch(
+          setToast({ message: "Employee added successfully!", type: "success" })
+        );
+        dispatch(
+          setFormdata({
+            name: "",
+            description: "",
+            position_id: undefined,
+          })
+        );
       }
     } catch (err) {
       console.log("faild to add data", err);
-      setToast({ message: "Failed to add position.", type: "error" });
+      dispatch(setToast({ message: "Failed to add employee.", type: "error" }));
     }
   };
 
@@ -44,26 +48,28 @@ export default function AddEmploye() {
     async function fetchpostion() {
       try {
         const data = await fetchPostion();
-        setEmployeeparent([...data.data]);
+        dispatch(setEmployeeparent([...data.data]));
       } catch (err) {
-        console.log("faild to fetch", err);
+        dispatch(
+          setToast({ message: "Faild to fetch the parents", type: "error" })
+        );
       }
     }
     fetchpostion();
   }, []);
   return (
     <div className="flex h-[90vh] justify-center items-center bg-gray-100 dark:bg-gray-900">
+      {toast.message && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast({})}
+        />
+      )}
       <div className="w-full max-w-md bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8">
         <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-gray-200 mb-6">
           Add Employe
         </h2>
-        {toast.message && (
-          <Toast
-            message={toast.message}
-            type={toast.type}
-            onClose={() => setToast({})}
-          />
-        )}
         <form className="space-y-4" onSubmit={handlesubmit}>
           <div>
             <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
