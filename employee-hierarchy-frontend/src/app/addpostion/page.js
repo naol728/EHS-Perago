@@ -12,6 +12,7 @@ import Toast from "../../../components/Toast";
 
 export default function AddPostion() {
   const postionparent = useSelector((state) => state.postions.postionparent);
+  
   const toast = useSelector((state) => state.postions.toast);
   const formdata = useSelector((state) => state.postions.formdata);
   const dispatch = useDispatch();
@@ -41,6 +42,7 @@ export default function AddPostion() {
     e.preventDefault();
     try {
       const res = await addPostion(formdata);
+
       if (res.status === 201) {
         dispatch(
           setFormdata({
@@ -54,7 +56,11 @@ export default function AddPostion() {
         );
       }
     } catch (err) {
-      dispatch(setToast({ message: "Failed to add position.", type: "error" }));
+      if (err) {
+        dispatch(
+          setToast({ message: "Failed to add position.", type: "error" })
+        );
+      }
     }
   };
   return (
