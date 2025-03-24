@@ -16,7 +16,7 @@ import {
   fetchEmployees,
   fetchPostion,
   fetchEmployee,
-  updateEmployee
+  updateEmployee,
 } from "../../../service/apiservice";
 
 export default function Tree() {
@@ -29,24 +29,28 @@ export default function Tree() {
   const [dataloading, setDataloading] = useState(false);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    async function fetchData() {
-      setLoading(true);
-      try {
-        const employeedata = await fetchEmployees();
-        const positiondata = await fetchPostion();
-
-        dispatch(addPostion(positiondata.data));
-        dispatch(addPeople(employeedata.data));
-      } catch (err) {
-        console.log("error while fetching data", err);
-      } finally {
-        console.log("fetched succesfully");
-        setLoading(false);
+  useEffect(
+    function () {
+      async function fetchData() {
+        setLoading(true);
+        try {
+          const employeedata = await fetchEmployees();
+          const positiondata = await fetchPostion();
+          console.log(positiondata.data.data);
+          console.log(employeedata.data);
+          dispatch(addPostion(positiondata.data.data));
+          dispatch(addPeople(employeedata.data));
+        } catch (err) {
+          console.log("error while fetching data", err);
+        } finally {
+          console.log("fetched succesfully");
+          setLoading(false);
+        }
       }
-    }
-    fetchData();
-  }, [dispatch]);
+      fetchData();
+    },
+    [dispatch]
+  );
 
   const handleUpdate = async (e) => {
     e.preventDefault();

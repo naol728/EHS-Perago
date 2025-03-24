@@ -48,11 +48,13 @@ export default function AddEmploye() {
     async function fetchpostion() {
       try {
         const data = await fetchPostion();
-        dispatch(setEmployeeparent([...data.data]));
+        dispatch(setEmployeeparent([...data.data.data]));
       } catch (err) {
-        dispatch(
-          setToast({ message: "Faild to fetch the parents", type: "error" })
-        );
+        if (err) {
+          dispatch(
+            setToast({ message: "Faild to fetch the parents", type: "error" })
+          );
+        }
       }
     }
     fetchpostion();
