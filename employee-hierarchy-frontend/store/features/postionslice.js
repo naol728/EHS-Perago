@@ -2,6 +2,7 @@ const { createSlice } = require("@reduxjs/toolkit");
 const initialState = {
   postionData: [],
   postionparent: [],
+  selectedPostion: null,
   formdata: {
     name: "",
     description: "",
@@ -28,14 +29,22 @@ const postion = createSlice({
         ...action.payload,
       };
     },
-      setToast(state, action) {
-        state.toast = {
-          message: action.payload.message,
-          type: action.payload.type,
-        };
-      }
-  
+    setToast(state, action) {
+      state.toast = {
+        message: action.payload.message,
+        type: action.payload.type,
+      };
+    },
+    setSelectedPostion(state, action) {
+      state.selectedPostion = action.payload;
+    },
   },
 });
-export const { addPostion, setPostionparent, setFormdata,setToast } = postion.actions;
+export const {
+  addPostion,
+  setPostionparent,
+  setFormdata,
+  setToast,
+  setSelectedPostion,
+} = postion.actions;
 export default postion.reducer;

@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import Button from "../../../components/Button";
 import Loading from "../../../components/Loading";
 import Popup from "../../../components/Popup";
-import { addPostion } from "../../../store/features/postionslice";
+import {
+  addPostion,
+  setSelectedPostion,
+} from "../../../store/features/postionslice";
 import {
   addPeople,
   handleChangepersondata,
@@ -66,6 +69,7 @@ export default function Tree() {
       setBtnloading(false);
     }
   };
+
   const openPopup = async (id) => {
     setIsPopupOpen(true);
     try {
@@ -78,6 +82,7 @@ export default function Tree() {
       setDataloading(false);
     }
   };
+
   const handleDelete = async (id) => {
     try {
       await deleteEmployee(id);
@@ -88,6 +93,11 @@ export default function Tree() {
     }
   };
 
+  const handleposupdate = (id) => {
+    dispatch(setSelectedPostion(id));
+    setIsPopupOpen(true);
+  };
+
   const recursiveRender = (parentId) => {
     return (
       <ul className="ml-4 border-l-2 border-gray-400 pl-4">
@@ -96,8 +106,14 @@ export default function Tree() {
           .map((pos) => (
             <div key={pos.id}>
               <li className="mb-2">
-                <div className="font-bold text-light-primary dark:text-dark-primary">
+                <div className="font-bold flex gap-2 text-light-primary dark:text-dark-primary">
                   {pos.name}
+
+                  {/* <div className="w-20">
+                    <Button onClick={() => handleposupdate} type="update">
+                      update
+                    </Button>
+                  </div> */}
                 </div>
                 <div className="text-sm text-light-secondary dark:text-dark-secondary">
                   {pos.description}

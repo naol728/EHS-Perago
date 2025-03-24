@@ -61,6 +61,15 @@ const addPostion = async (data) => {
   }
 };
 
+const updatePostion = async (index, data) => {
+  try {
+    const res = await axios.patch(`${postionurl}/${id}`, data);
+    return res;
+  } catch (err) {
+    throw new Error("faild to update the position", err);
+  }
+};
+
 export {
   fetchEmployees,
   fetchPostion,
@@ -69,4 +78,5 @@ export {
   fetchEmployee,
   addPostion,
   addEmployee,
+  updatePostion,
 };

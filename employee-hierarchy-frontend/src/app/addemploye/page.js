@@ -40,7 +40,11 @@ export default function AddEmploye() {
       }
     } catch (err) {
       console.log("faild to add data", err);
-      dispatch(setToast({ message: "Failed to add employee.", type: "error" }));
+      if (err) {
+        dispatch(
+          setToast({ message: "Failed to add employee.", type: "error" })
+        );
+      }
     }
   };
 
