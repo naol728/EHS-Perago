@@ -1,5 +1,5 @@
 const db = require("../db/index");
-const { eq } = require("drizzle-orm");
+const { eq, count } = require("drizzle-orm");
 const { Employee } = require("./../db/schema");
 const createEmployee = async (req, res) => {
   const { name, description, position_id } = req.body;
@@ -22,7 +22,24 @@ const createEmployee = async (req, res) => {
 
 const getEmployees = async (req, res) => {
   try {
-    const employees = await db.select().from(Employee);
+    // pagination
+    const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
+    const offset = (page - 1) * limit;
+    // calculating how many rows are there
+    const totalRows = await db.select({ count: count() }).from(Employee);
+    console.log(totalRows.at(0).count);
+    console.log(offset);
+    if (totalRows.at(0).count <= offset) {
+      return res.status(400).json({
+        message: "page not found",
+      });
+    }
+    const employees = await db
+      .select()
+      .from(Employee)
+      .limit(limit)
+      .offset(offset);
     res.status(200).json(employees);
   } catch (error) {
     console.error(error);

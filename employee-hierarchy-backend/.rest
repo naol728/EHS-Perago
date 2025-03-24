@@ -1,7 +1,5 @@
-get http://localhost:3000/api/employee
+GET http://localhost:8000/api/postion
 
-{
-"name":"naol meseret",
-"description":"this is our CEO",
-"position_id":1
-}
+###
+
+GET http://localhost:8000/api/employee?page=5

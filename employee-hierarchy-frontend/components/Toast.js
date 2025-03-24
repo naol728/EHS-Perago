@@ -4,12 +4,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle, XCircle, X } from "lucide-react";
 
 export default function Toast({ message, type, onClose }) {
-  console.log("Toast message:", message);
   useEffect(() => {
     const timer = setTimeout(() => {
       console.log("Closing toast...");
       onClose();
-    }, 7000); 
+    }, 7000);
 
     return () => clearTimeout(timer);
   }, [onClose]);

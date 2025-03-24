@@ -25,12 +25,14 @@ export default function AddPostion() {
     async function fetchpostion() {
       try {
         const data = await fetchPostion();
-        dispatch(setPostionparent([...data.data]));
+        dispatch(setPostionparent([...data.data.data]));
       } catch (err) {
         console.log(err);
-        dispatch(
-          setToast({ message: "Faild to fetch the parents ", type: "error" })
-        );
+        if (err) {
+          dispatch(
+            setToast({ message: "Faild to fetch the parents", type: "error" })
+          );
+        }
       }
     }
     fetchpostion();
