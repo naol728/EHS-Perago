@@ -4,9 +4,16 @@ import Button from "./Button";
 import {
   addPeople,
   handleChangepersondata,
+  setIsPopupOpen,
 } from "../store/features/peopleslice";
 
-import { fetchEmployees, updateEmployee } from "../service/apiservice";
+import {
+  addPostion,
+  fetchEmployees,
+  fetchPostion,
+  fetchPostionn,
+  updateEmployee,
+} from "../service/apiservice";
 export default function UpdateForm() {
   const selectedpeople = useSelector((state) => state.peoples.selectedpeople);
   const dispatch = useDispatch();
@@ -17,12 +24,15 @@ export default function UpdateForm() {
     try {
       setBtnloading(true);
       await updateEmployee(selectedpeople.id, selectedpeople);
-      const updatedData = await fetchEmployees();
-      dispatch(addPeople(updatedData.data));
+      const updatedemployeedata = await fetchEmployees();
+      const updatedpositiondata = await fetchPostion();
+      dispatch(addPostion(updatedpositiondata.data.data));
+      dispatch(addPeople(updatedemployeedata.data));
     } catch (err) {
       console.log(err);
     } finally {
       setBtnloading(false);
+      dispatch(setIsPopupOpen(false));
     }
   };
 

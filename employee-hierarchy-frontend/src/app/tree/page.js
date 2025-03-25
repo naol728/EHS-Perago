@@ -1,38 +1,26 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Button from "../../../components/Button";
 import Loading from "../../../components/Loading";
 import Popup from "../../../components/Popup";
-import {
-  addPostion,
-  setSelectedPostion,
-} from "../../../store/features/postionslice";
-import {
-  addPeople,
-  handleChangepersondata,
-  setSelectedperson,
-} from "../../../store/features/peopleslice";
+import { addPostion } from "../../../store/features/postionslice";
+import { addPeople, setIsPopupOpen } from "../../../store/features/peopleslice";
 
 import {
   deleteEmployee,
   fetchEmployees,
   fetchPostion,
-  fetchEmployee,
-  updateEmployee,
 } from "../../../service/apiservice";
-import UpdateForm from "../../../components/UpdatePersons";
 import PostionsList from "../../../components/PostionsList";
 import PersonsList from "../../../components/PersonsList";
 
 export default function Tree() {
   const positions = useSelector((state) => state.postions.postionData);
   const persons = useSelector((state) => state.peoples.peopleData);
-  const [loading, setLoading] = useState(true);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [dataloading, setDataloading] = useState(false);
-  const [poptype, setPoptype] = useState("");
+  const isPopupOpen = useSelector((state) => state.peoples.isPopupOpen);
+  const popuptype = useSelector((state) => state.peoples.popuptype);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
 
   useEffect(
     function () {
@@ -57,8 +45,10 @@ export default function Tree() {
   const handleDelete = async (id) => {
     try {
       await deleteEmployee(id);
-      const updatedData = await fetchEmployees();
-      dispatch(addPeople(updatedData.data));
+      const updatedemployeedata = await fetchEmployees();
+      const updatedpositiondata = await fetchPostion();
+      dispatch(addPostion(updatedpositiondata.data.data));
+      dispatch(addPeople(updatedemployeedata.data));
     } catch (err) {
       console.log(err);
     }
@@ -75,8 +65,6 @@ export default function Tree() {
                 name={pos.name}
                 description={pos.description}
                 id={pos.id}
-                setIsPopupOpen={setIsPopupOpen}
-                setPoptype={setPoptype}
               />
               {persons
                 .filter((person) => person.position_id == pos.id)
@@ -86,9 +74,7 @@ export default function Tree() {
                       name={person.name}
                       description={person.description}
                       id={person.id}
-                      setIsPopupOpen={setIsPopupOpen}
                       handleDelete={handleDelete}
-                      setPoptype={setPoptype}
                     />
                   </li>
                 ))}
@@ -108,9 +94,9 @@ export default function Tree() {
       </h2>
       <Popup
         isOpen={isPopupOpen}
-        onClose={() => setIsPopupOpen(false)}
+        onClose={() => dispatch(setIsPopupOpen(false))}
         title="Update the Data"
-        type={poptype}
+        type={popuptype}
       />
       {recursiveRender(null)}
     </div>

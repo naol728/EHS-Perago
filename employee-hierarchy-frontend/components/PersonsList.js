@@ -1,21 +1,18 @@
 import React from "react";
 import Button from "./Button";
 import { fetchEmployee } from "../service/apiservice";
-import { setSelectedperson } from "../store/features/peopleslice";
+import {
+  setIsPopupOpen,
+  setSelectedperson,
+  setPopuptype,
+} from "../store/features/peopleslice";
 import { useDispatch } from "react-redux";
 
-export default function PersonsList({
-  name,
-  description,
-  id,
-  handleDelete,
-  setIsPopupOpen,
-  setPoptype,
-}) {
+export default function PersonsList({ name, description, id, handleDelete }) {
   const dispatch = useDispatch();
   const handleClick = async () => {
-    setPoptype("persons");
-    setIsPopupOpen(true);
+    dispatch(setPopuptype("persons"));
+    dispatch(setIsPopupOpen(true));
     try {
       const selecteddata = await fetchEmployee(id);
       dispatch(setSelectedperson(selecteddata.data[0]));

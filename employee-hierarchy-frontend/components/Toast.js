@@ -38,7 +38,7 @@ export default function Toast({ message, type, onClose }) {
           <span className="font-medium">{message}</span>
 
           <button
-            onClick={onClose}
+            onClick={() => onClose}
             className="ml-auto text-gray-500 hover:text-gray-700"
           >
             <X className="w-4 h-4" />

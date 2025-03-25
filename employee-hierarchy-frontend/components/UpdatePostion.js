@@ -1,25 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "./Button";
 import { handleChangepostiondata } from "../store/features/postionslice";
-import { addPostion, fetchPostion, updatePostionn } from "../service/apiservice";
+import {
+  addPostion,
+  fetchEmployees,
+  fetchPostion,
+  updatePostionn,
+} from "../service/apiservice";
+import { setIsPopupOpen } from "../store/features/peopleslice";
 
 export default function UpdatePostion() {
   const selectedPostion = useSelector(
     (state) => state.postions.selectedPostion
   );
+  const [btnloading, setBtnloading] = useState(false);
   const dispatch = useDispatch();
-  console.log(selectedPostion);
 
   const handleUpdate = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      const res=await updatePostionn(selectedPostion.id, selectedPostion);
-      console.log(res)
-      const updatedData = await fetchPostion();
-      dispatch(addPostion(updatedData.data.data));
+      setBtnloading(true);
+      const res = await updatePostionn(selectedPostion.id, selectedPostion);
+      console.log(res);
+      const updatedemployeedata = await fetchEmployees();
+      const updatedpositiondata = await fetchPostion();
+      dispatch(addPostion(updatedpositiondata.data.data));
+      dispatch(addPeople(updatedemployeedata.data));
     } catch (err) {
-        console.log(err)
+      console.log(err);
+      setBtnloading(false);
+    } finally {
+      setBtnloading(false);
+      dispatch(setIsPopupOpen(false));
     }
   };
 
@@ -59,7 +72,7 @@ export default function UpdatePostion() {
       ></textarea>
 
       <Button type="submit" d>
-        {/* {btnloading ? "Updating..." : "Update"} */}update
+        {btnloading ? "Updating..." : "Update"}
       </Button>
     </form>
   );
