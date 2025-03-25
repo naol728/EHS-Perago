@@ -3,17 +3,12 @@ import Button from "./Button";
 import { useDispatch } from "react-redux";
 import { setSelectedPostion } from "../store/features/postionslice";
 import { fetchPostionn } from "../service/apiservice";
-export default function PostionsList({
-  name,
-  description,
-  id,
-  setIsPopupOpen,
-  setPoptype,
-}) {
+import { setIsPopupOpen, setPopuptype } from "../store/features/peopleslice";
+export default function PostionsList({ name, description, id }) {
   const dispatch = useDispatch();
   const handleClick = async () => {
-    setIsPopupOpen(true);
-    setPoptype("postion")
+    dispatch(setIsPopupOpen(true));
+    dispatch(setPopuptype("postion"));
     if (id) {
       const selectedpostion = await fetchPostionn(id);
       dispatch(setSelectedPostion(selectedpostion.data[0]));

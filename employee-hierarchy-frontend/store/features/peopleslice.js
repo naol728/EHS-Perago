@@ -3,6 +3,8 @@ const initialState = {
   peopleData: [],
   selectedpeople: null,
   employeeparent: [],
+  isPopupOpen: false,
+  popuptype: "",
   formdata: {
     name: "",
     description: "",
@@ -39,6 +41,12 @@ const people = createSlice({
         ...action.payload,
       };
     },
+    setIsPopupOpen(state, action) {
+      state.isPopupOpen = action.payload;
+    },
+    setPopuptype(state, action) {
+      state.popuptype = action.payload;
+    },
   },
 });
 export const {
@@ -47,5 +55,7 @@ export const {
   handleChangepersondata,
   setEmployeeparent,
   setFormdata,
+  setIsPopupOpen,
+  setPopuptype,
 } = people.actions;
 export default people.reducer;
