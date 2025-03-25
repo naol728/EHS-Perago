@@ -21,6 +21,9 @@ import {
   fetchEmployee,
   updateEmployee,
 } from "../../../service/apiservice";
+import UpdateForm from "../../../components/UpdateForm";
+import PostionsList from "../../../components/PostionsList";
+import PersonsList from "../../../components/PersonsList";
 
 export default function Tree() {
   const positions = useSelector((state) => state.postions.postionData);
@@ -55,21 +58,6 @@ export default function Tree() {
     [dispatch]
   );
 
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    try {
-      setBtnloading(true);
-      await updateEmployee(selectedpeople.id, selectedpeople);
-      const updatedData = await fetchEmployees();
-      dispatch(addPeople(updatedData.data));
-      setIsPopupOpen(false);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setBtnloading(false);
-    }
-  };
-
   const openPopup = async (id) => {
     setIsPopupOpen(true);
     try {
@@ -93,11 +81,6 @@ export default function Tree() {
     }
   };
 
-  const handleposupdate = (id) => {
-    dispatch(setSelectedPostion(id));
-    setIsPopupOpen(true);
-  };
-
   const recursiveRender = (parentId) => {
     return (
       <ul className="ml-4 border-l-2 border-gray-400 pl-4">
@@ -105,44 +88,17 @@ export default function Tree() {
           .filter((pos) => pos.parent_id == parentId)
           .map((pos) => (
             <div key={pos.id}>
-              <li className="mb-2">
-                <div className="font-bold flex gap-2 text-light-primary dark:text-dark-primary">
-                  {pos.name}
-
-                  {/* <div className="w-20">
-                    <Button onClick={() => handleposupdate} type="update">
-                      update
-                    </Button>
-                  </div> */}
-                </div>
-                <div className="text-sm text-light-secondary dark:text-dark-secondary">
-                  {pos.description}
-                </div>
-              </li>
+              <PostionsList name={pos.name} description={pos.description} />
               {persons
                 .filter((person) => person.position_id == pos.id)
                 .map((person) => (
                   <li key={person.id} className="mb-2 ml-4">
-                    <div className="text-light-accent dark:text-dark-accent">
-                      {person.name}
-                      <div className="flex space-x-3 mt-1">
-                        <Button
-                          type="update"
-                          onClick={() => openPopup(person.id)}
-                        >
-                          update
-                        </Button>
-                        <Button
-                          type="delete"
-                          onClick={() => handleDelete(person.id)}
-                        >
-                          delete
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="text-xs mt-1 text-gray-500">
-                      {person.description}
-                    </div>
+                    <PersonsList
+                      name={person.name}
+                      description={person.description}
+                      id={person.id}
+                      openPopup={openPopup}
+                    />
                   </li>
                 ))}
               {recursiveRender(pos.id)}
@@ -165,46 +121,7 @@ export default function Tree() {
         onClose={() => setIsPopupOpen(false)}
         title="Update the Data"
       >
-        <form className="flex flex-col" onSubmit={handleUpdate}>
-          <label className="text-sm font-semibold mb-1">Name:</label>
-          <input
-            type="text"
-            name="name"
-            disabled={dataloading}
-            value={selectedpeople?.name}
-            onChange={(e) =>
-              dispatch(
-                handleChangepersondata({
-                  ...selectedpeople,
-                  name: e.target.value,
-                })
-              )
-            }
-            className=" p-2 mb-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-gray-700 dark:text-gray-200"
-            required
-          />
-
-          <label className="text-sm font-semibold mb-1">Description:</label>
-          <textarea
-            name="description"
-            disabled={dataloading}
-            value={selectedpeople?.description}
-            onChange={(e) =>
-              dispatch(
-                handleChangepersondata({
-                  ...selectedpeople,
-                  description: e.target.value,
-                })
-              )
-            }
-            className="border  p-2 mb-3  border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-gray-700 dark:text-gray-200"
-            required
-          ></textarea>
-
-          <Button type="submit" disabled={btnloading}>
-            {btnloading ? "Updating..." : "Update"}
-          </Button>
-        </form>
+        <UpdateForm />
       </Popup>
     </div>
   );
