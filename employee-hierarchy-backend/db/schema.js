@@ -5,7 +5,8 @@ const Positions = pgTable("positions", {
   name: text("name").notNull(),
   description: text("description"),
   parent_id: integer("parent_id").references(() => Positions.id, {
-    onDelete: "SET NULL",
+    onDelete: "RESTRICT",
+    onUpdate: "CASCADE",
   }),
 });
 

@@ -67,8 +67,25 @@ const getPostion = async (req, res) => {
   }
 };
 const deletePostion = async (req, res) => {
+  const positionId = req.query.params.id;
   try {
-    await db.delete(Positions).where(eq(Positions.id, req.params.id));
+    const position = await db
+      .select()
+      .from(Positions)
+      .where(eq(Positions.id, positionId))
+      .first();
+
+    if (!position) {
+      return res.status(404).json({ message: "Position not found" });
+    }
+
+    if (position.parent_id === null) {
+      return res
+        .status(400)
+        .json({ message: "Root position cannot be deleted" });
+    }
+
+    await db.delete(Positions).where(eq(Positions.id, positionId));
     res.status(200).json({ message: "Employee deleted" });
   } catch (err) {
     console.log(err);
