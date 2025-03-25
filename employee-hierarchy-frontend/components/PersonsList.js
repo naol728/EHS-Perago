@@ -9,13 +9,13 @@ export default function PersonsList({
   description,
   id,
   handleDelete,
-  openPopup,
+  setIsPopupOpen,
   setPoptype,
 }) {
   const dispatch = useDispatch();
   const handleClick = async () => {
     setPoptype("persons");
-    openPopup();
+    setIsPopupOpen(true);
     try {
       const selecteddata = await fetchEmployee(id);
       dispatch(setSelectedperson(selecteddata.data[0]));

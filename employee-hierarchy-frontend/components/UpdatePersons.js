@@ -1,26 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "./Button";
 import {
   addPeople,
   handleChangepersondata,
-  setSelectedperson,
 } from "../store/features/peopleslice";
 
-import {
-  deleteEmployee,
-  fetchEmployees,
-  fetchPostion,
-  fetchEmployee,
-  updateEmployee,
-} from "../service/apiservice";
+import { fetchEmployees, updateEmployee } from "../service/apiservice";
 export default function UpdateForm() {
   const selectedpeople = useSelector((state) => state.peoples.selectedpeople);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [btnloading, setBtnloading] = useState(false);
-  const [dataloading, setDataloading] = useState(false);
   const dispatch = useDispatch();
-  console.log(selectedpeople);
+  const [btnloading, setBtnloading] = useState(false);
+
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
@@ -28,7 +19,6 @@ export default function UpdateForm() {
       await updateEmployee(selectedpeople.id, selectedpeople);
       const updatedData = await fetchEmployees();
       dispatch(addPeople(updatedData.data));
-      setIsPopupOpen(false);
     } catch (err) {
       console.log(err);
     } finally {
@@ -43,7 +33,6 @@ export default function UpdateForm() {
         <input
           type="text"
           name="name"
-          disabled={dataloading}
           value={selectedpeople?.name}
           onChange={(e) =>
             dispatch(
@@ -60,7 +49,6 @@ export default function UpdateForm() {
         <label className="text-sm font-semibold mb-1">Description:</label>
         <textarea
           name="description"
-          disabled={dataloading}
           value={selectedpeople?.description}
           onChange={(e) =>
             dispatch(
