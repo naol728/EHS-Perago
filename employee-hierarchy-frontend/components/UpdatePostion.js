@@ -1,24 +1,39 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Button from "./Button";
+import { handleChangepostiondata } from "../store/features/postionslice";
+import { addPostion, fetchPostion, updatePostionn } from "../service/apiservice";
 
 export default function UpdatePostion() {
   const selectedPostion = useSelector(
     (state) => state.postions.selectedPostion
   );
+  const dispatch = useDispatch();
   console.log(selectedPostion);
 
+  const handleUpdate = async (e) => {
+    e.preventDefault()
+    try {
+      const res=await updatePostionn(selectedPostion.id, selectedPostion);
+      console.log(res)
+      const updatedData = await fetchPostion();
+      dispatch(addPostion(updatedData.data.data));
+    } catch (err) {
+        console.log(err)
+    }
+  };
+
   return (
-    <form className="flex flex-col">
-      {/* <label className="text-sm font-semibold mb-1">Name:</label>
+    <form className="flex flex-col" onSubmit={handleUpdate}>
+      <label className="text-sm font-semibold mb-1">Name:</label>
       <input
         type="text"
         name="name"
-        disabled={dataloading}
-        value={selectedpeople?.name}
+        value={selectedPostion?.name}
         onChange={(e) =>
           dispatch(
-            handleChangepersondata({
-              ...selectedpeople,
+            handleChangepostiondata({
+              ...selectedPostion,
               name: e.target.value,
             })
           )
@@ -30,12 +45,11 @@ export default function UpdatePostion() {
       <label className="text-sm font-semibold mb-1">Description:</label>
       <textarea
         name="description"
-        disabled={dataloading}
-        value={selectedpeople?.description}
+        value={selectedPostion?.description}
         onChange={(e) =>
           dispatch(
-            handleChangepersondata({
-              ...selectedpeople,
+            handleChangepostiondata({
+              ...selectedPostion,
               description: e.target.value,
             })
           )
@@ -44,9 +58,9 @@ export default function UpdatePostion() {
         required
       ></textarea>
 
-      <Button type="submit" disabled={btnloading}>
-        {btnloading ? "Updating..." : "Update"}
-      </Button> */}
+      <Button type="submit" d>
+        {/* {btnloading ? "Updating..." : "Update"} */}update
+      </Button>
     </form>
   );
 }

@@ -38,6 +38,16 @@ const postion = createSlice({
     setSelectedPostion(state, action) {
       state.selectedPostion = action.payload;
     },
+    handleChangepostiondata(state, action) {
+      if (state.selectedPostion) {
+        state.selectedPostion = {
+          ...state.selectedPostion,
+          name: action.payload.name,
+          description:
+            action.payload.description || state.selectedPostion.description,
+        };
+      }
+    },
   },
 });
 export const {
@@ -46,5 +56,6 @@ export const {
   setFormdata,
   setToast,
   setSelectedPostion,
+  handleChangepostiondata,
 } = postion.actions;
 export default postion.reducer;

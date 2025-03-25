@@ -11,7 +11,15 @@ const fetchEmployees = async () => {
     throw new Error("faild to fetch", err);
   }
 };
-const fetchPostion = async (id) => {
+const fetchPostion = async () => {
+  try {
+    const data = axios.get(`${postionurl}`);
+    return data;
+  } catch (err) {
+    throw new Error("faild to fetch", err);
+  }
+};
+const fetchPostionn = async (id) => {
   try {
     const data = axios.get(`${postionurl}/${id}`);
     return data;
@@ -69,6 +77,14 @@ const updatePostion = async (index, data) => {
     throw new Error("faild to update the position", err);
   }
 };
+const updatePostionn = async (id, data) => {
+  try {
+    const res = await axios.patch(`${postionurl}/${id}`, data);
+    return res;
+  } catch (err) {
+    throw new Error("faild to update the position", err);
+  }
+};
 
 export {
   fetchEmployees,
@@ -79,4 +95,6 @@ export {
   addPostion,
   addEmployee,
   updatePostion,
+  fetchPostionn,
+  updatePostionn
 };

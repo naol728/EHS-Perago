@@ -41,14 +41,11 @@ export default function Tree() {
         try {
           const employeedata = await fetchEmployees();
           const positiondata = await fetchPostion();
-          console.log(positiondata.data.data);
-          console.log(employeedata.data);
           dispatch(addPostion(positiondata.data.data));
           dispatch(addPeople(employeedata.data));
         } catch (err) {
           console.log("error while fetching data", err);
         } finally {
-          console.log("fetched succesfully");
           setLoading(false);
         }
       }
@@ -56,19 +53,6 @@ export default function Tree() {
     },
     [dispatch]
   );
-
-  const openPopup = async () => {
-    setIsPopupOpen(true);
-    // try {
-    //   setDataloading(true);
-    //   const selecteddata = await fetchEmployee(id);
-    //   dispatch(setSelectedperson(selecteddata.data[0]));
-    // } catch (err) {
-    //   console.log(err);
-    // } finally {
-    //   setDataloading(false);
-    // }
-  };
 
   const handleDelete = async (id) => {
     try {
@@ -91,7 +75,7 @@ export default function Tree() {
                 name={pos.name}
                 description={pos.description}
                 id={pos.id}
-                openPopup={openPopup}
+                setIsPopupOpen={setIsPopupOpen}
                 setPoptype={setPoptype}
               />
               {persons
@@ -102,7 +86,7 @@ export default function Tree() {
                       name={person.name}
                       description={person.description}
                       id={person.id}
-                      openPopup={openPopup}
+                      setIsPopupOpen={setIsPopupOpen}
                       handleDelete={handleDelete}
                       setPoptype={setPoptype}
                     />
