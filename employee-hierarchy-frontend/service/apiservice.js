@@ -11,9 +11,9 @@ const fetchEmployees = async () => {
     throw new Error("faild to fetch", err);
   }
 };
-const fetchPostion = async () => {
+const fetchPostion = async (id) => {
   try {
-    const data = axios.get(`${postionurl}`);
+    const data = axios.get(`${postionurl}/${id}`);
     return data;
   } catch (err) {
     throw new Error("faild to fetch", err);

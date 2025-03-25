@@ -21,18 +21,17 @@ import {
   fetchEmployee,
   updateEmployee,
 } from "../../../service/apiservice";
-import UpdateForm from "../../../components/UpdateForm";
+import UpdateForm from "../../../components/UpdatePersons";
 import PostionsList from "../../../components/PostionsList";
 import PersonsList from "../../../components/PersonsList";
 
 export default function Tree() {
   const positions = useSelector((state) => state.postions.postionData);
   const persons = useSelector((state) => state.peoples.peopleData);
-  const selectedpeople = useSelector((state) => state.peoples.selectedpeople);
   const [loading, setLoading] = useState(true);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [btnloading, setBtnloading] = useState(false);
   const [dataloading, setDataloading] = useState(false);
+  const [poptype, setPoptype] = useState("");
   const dispatch = useDispatch();
 
   useEffect(
@@ -58,17 +57,17 @@ export default function Tree() {
     [dispatch]
   );
 
-  const openPopup = async (id) => {
+  const openPopup = async () => {
     setIsPopupOpen(true);
-    try {
-      setDataloading(true);
-      const selecteddata = await fetchEmployee(id);
-      dispatch(setSelectedperson(selecteddata.data[0]));
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setDataloading(false);
-    }
+    // try {
+    //   setDataloading(true);
+    //   const selecteddata = await fetchEmployee(id);
+    //   dispatch(setSelectedperson(selecteddata.data[0]));
+    // } catch (err) {
+    //   console.log(err);
+    // } finally {
+    //   setDataloading(false);
+    // }
   };
 
   const handleDelete = async (id) => {
@@ -88,7 +87,13 @@ export default function Tree() {
           .filter((pos) => pos.parent_id == parentId)
           .map((pos) => (
             <div key={pos.id}>
-              <PostionsList name={pos.name} description={pos.description} />
+              <PostionsList
+                name={pos.name}
+                description={pos.description}
+                id={pos.id}
+                openPopup={openPopup}
+                setPoptype={setPoptype}
+              />
               {persons
                 .filter((person) => person.position_id == pos.id)
                 .map((person) => (
@@ -98,6 +103,8 @@ export default function Tree() {
                       description={person.description}
                       id={person.id}
                       openPopup={openPopup}
+                      handleDelete={handleDelete}
+                      setPoptype={setPoptype}
                     />
                   </li>
                 ))}
@@ -115,14 +122,13 @@ export default function Tree() {
       <h2 className="text-2xl font-semibold text-center mb-4">
         Employee Hierarchy
       </h2>
-      {recursiveRender(null)}
       <Popup
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}
         title="Update the Data"
-      >
-        <UpdateForm />
-      </Popup>
+        type={poptype}
+      />
+      {recursiveRender(null)}
     </div>
   );
 }

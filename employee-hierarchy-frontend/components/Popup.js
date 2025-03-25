@@ -1,7 +1,9 @@
 "use client";
 import React, { useEffect } from "react";
+import UpdateForm from "./UpdatePersons";
+import UpdatePostion from "./UpdatePostion";
 
-export default function Popup({ isOpen, onClose, title, children }) {
+export default function Popup({ isOpen, onClose, title, type }) {
   useEffect(() => {
     const handleEsc = (event) => {
       if (event.key === "Escape") {
@@ -28,7 +30,10 @@ export default function Popup({ isOpen, onClose, title, children }) {
             ✕
           </button>
         </div>
-        <div className="mt-4">{children}</div>
+        <div className="mt-4">
+          {type == "persons" && <UpdateForm />}
+          {type == "postion" && <UpdatePostion />}
+        </div>
         <div className="flex justify-end mt-4">
           <button
             onClick={onClose}
