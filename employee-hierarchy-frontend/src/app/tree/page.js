@@ -46,8 +46,6 @@ export default function Tree() {
     try {
       await deleteEmployee(id);
       const updatedemployeedata = await fetchEmployees();
-      const updatedpositiondata = await fetchPostion();
-      dispatch(addPostion(updatedpositiondata.data.data));
       dispatch(addPeople(updatedemployeedata.data));
     } catch (err) {
       console.log(err);

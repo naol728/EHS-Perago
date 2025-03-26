@@ -57,7 +57,9 @@ const addEmployee = async (data) => {
     const res = await axios.post(`${employeeurl}`, data);
     return res;
   } catch (err) {
-    throw new Error("faild to add employee", err);
+    if (err) {
+      throw new Error("faild to add employee", err);
+    }
   }
 };
 const addPostion = async (data) => {
@@ -65,7 +67,7 @@ const addPostion = async (data) => {
     const res = await axios.post(`${postionurl}`, data);
     return res;
   } catch (err) {
-    throw new Error("faild to add postion", err);
+     throw new Error("faild to add postion", err);
   }
 };
 
@@ -96,5 +98,5 @@ export {
   addEmployee,
   updatePostion,
   fetchPostionn,
-  updatePostionn
+  updatePostionn,
 };
